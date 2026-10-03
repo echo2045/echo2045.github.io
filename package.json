@@ -7,7 +7,6 @@
     "deploy": "gh-pages -d dist"
   },
   "dependencies": {
-    "framer-motion": "latest",
     "react": "latest",
     "react-dom": "latest",
     "vite": "latest"

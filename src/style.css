@@ -1,165 +1,533 @@
+/* Endless Dhaka — a night drive through his career. The world is the site. */
 
-*{
- box-sizing:border-box;
+:root{
+  --sky0:#05070f;
+  --cyan:#4fd8ff;
+  --amber:#ffb84d;
+  --green:#39d98a;
+  --pink:#ff7ad9;
+  --txt:#e9eef7;
+  --dim:rgba(233,238,247,.62);
+  --faint:rgba(233,238,247,.4);
+  --line:rgba(140,190,255,.16);
+  --panel:#0e1524;
 }
 
+*{box-sizing:border-box}
+html,body{height:100%;overflow:hidden}
 body{
- margin:0;
- background:#070d18;
- color:white;
- font-family:Inter,Arial,sans-serif;
+  margin:0;color:var(--txt);font-family:"Chakra Petch",sans-serif;
+  background:var(--sky0);
+}
+::selection{background:var(--cyan);color:#05070f}
+:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;padding:0}
+a{color:var(--cyan)}
+
+/* ── fixed sky: gradient, moon, stars (infinite parallax) ── */
+.sky{
+  position:fixed;inset:0;z-index:0;
+  background:linear-gradient(180deg,#04060e 0%,#0a1130 52%,#16224f 78%,#1c2452 100%);
+}
+.sky::after{ /* city glow on the horizon */
+  content:"";position:absolute;left:0;right:0;bottom:0;height:30%;
+  background:radial-gradient(120% 100% at 50% 110%,rgba(255,150,60,.16),transparent 60%);
+}
+.moon{
+  position:absolute;top:9%;right:12%;width:74px;height:74px;border-radius:50%;
+  background:radial-gradient(circle at 38% 35%,#fdfbf3,#d8d2bb 70%);
+  box-shadow:0 0 60px 18px rgba(240,235,210,.18),0 0 140px 60px rgba(140,170,255,.08);
+}
+.star{
+  position:absolute;width:2px;height:2px;border-radius:50%;background:#dfe8ff;opacity:.7;
+  animation:twinkle 3.5s ease-in-out infinite;
+}
+.star:nth-child(3n){width:3px;height:3px;opacity:.9}
+@keyframes twinkle{0%,100%{opacity:.9}50%{opacity:.25}}
+
+/* ── the scroller ── */
+.world{
+  position:fixed;inset:0;z-index:1;
+  overflow-x:auto;overflow-y:hidden;
+  scrollbar-width:none;
+  overscroll-behavior-x:contain;
+}
+.world::-webkit-scrollbar{display:none}
+.track{position:relative;height:100dvh;aspect-ratio:4800/720}
+.world-svg{position:absolute;inset:0;width:100%;height:100%;display:block}
+
+/* scenery palette */
+.skyline{fill:#0a1024}
+.w{fill:#0f1830}
+.w.lit,.lit{fill:rgba(255,190,90,.75)}
+.blk{fill:#0d1530}
+.signboard{fill:#0a0f22;stroke:rgba(140,190,255,.25);stroke-width:1.5}
+.neon{font-size:24px;font-weight:700;letter-spacing:3px;font-family:"Chakra Petch",sans-serif}
+.neon.cyan{fill:var(--cyan);filter:drop-shadow(0 0 8px rgba(79,216,255,.9))}
+.neon.amber{fill:var(--amber);filter:drop-shadow(0 0 8px rgba(255,184,77,.9))}
+.neon.green{fill:var(--green);filter:drop-shadow(0 0 8px rgba(57,217,138,.9))}
+.neon.pink{fill:var(--pink);filter:drop-shadow(0 0 8px rgba(255,122,217,.9));animation:flicker 4.2s infinite}
+.neon.dim{opacity:.75}
+@keyframes flicker{0%,100%{opacity:1}92%{opacity:1}93%{opacity:.4}94%{opacity:1}97%{opacity:.6}98%{opacity:1}}
+.mast{stroke:#0d1530;stroke-width:6;fill:none}
+.pole{stroke:#0d1530;stroke-width:5;fill:none}
+.cone{fill:rgba(200,220,255,.05)}
+.conel{fill:rgba(255,210,110,.07)}
+.frame{fill:rgba(140,190,255,.06);stroke:rgba(140,190,255,.35);stroke-width:3}
+.frameln{stroke:rgba(140,190,255,.18);stroke-width:2;fill:none}
+.beacon{fill:var(--amber);filter:drop-shadow(0 0 8px rgba(255,184,77,.9));animation:twinkle 1.6s ease-in-out infinite}
+.bulb{fill:#ffd98a;filter:drop-shadow(0 0 7px rgba(255,210,110,.95))}
+.flood{fill:#dfeaff;filter:drop-shadow(0 0 9px rgba(190,220,255,.95))}
+.cranebody{stroke:#0d1530;stroke-width:7;fill:none}
+.cable{stroke:#0d1530;stroke-width:2.5;fill:none}
+.road{fill:#080b16}
+.kerb{fill:rgba(140,190,255,.22)}
+.dash{fill:rgba(255,200,90,.5)}
+
+/* ── the bus ── */
+.bus{display:block;width:100%;filter:drop-shadow(0 10px 18px rgba(0,0,0,.6))}
+.bus .body{fill:#101a35;stroke:rgba(140,190,255,.4);stroke-width:1.5}
+.bus .band{fill:#0b1226}
+.bus .dest{fill:#1a1206}
+.bus .desttxt{fill:var(--amber);font-size:7px;font-weight:700;font-family:"Chakra Petch"}
+.bus .winlit{fill:rgba(255,215,130,.85)}
+.bus .winlit.cab{fill:rgba(140,200,255,.55)}
+.bus .panel{fill:#0a0f22;stroke:rgba(140,190,255,.2)}
+.bus .sidetxt{fill:rgba(140,200,255,.7);font-size:8px;font-weight:600;letter-spacing:1.5px;font-family:"Chakra Petch"}
+.bus .wheel{fill:#0a0d18;stroke:#22304f;stroke-width:2.5;transform-box:fill-box;transform-origin:center;transform:rotate(var(--spin,0deg))}
+.bus .hub{fill:#22304f}
+.bus .tail{fill:#ff5d5d}
+.bus .plate{fill:rgba(233,238,247,.5);font-size:7px;letter-spacing:1px;font-family:"Chakra Petch"}
+.bus .beamlight{fill:rgba(255,225,140,.10)}
+
+/* ── signposts (the interactive content) ── */
+.poi{position:absolute;bottom:14.2%;z-index:5}
+.marker{display:block;position:relative}
+.pole{display:block;width:3px;height:44px;background:#1a2642;margin:0 auto}
+.glow{display:block;width:12px;height:12px;border-radius:50%;background:var(--cyan);margin:-4px auto 0;box-shadow:0 0 12px rgba(79,216,255,.9)}
+.board{
+  display:block;margin-bottom:6px;padding:7px 13px;
+  background:rgba(10,15,34,.85);border:1px solid rgba(140,190,255,.35);
+  color:var(--txt);font-size:.72rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,8px 100%,0 calc(100% - 8px));
+  white-space:nowrap;backdrop-filter:blur(2px);
+  transition:border-color .2s,box-shadow .2s;
+}
+.marker:hover .board,.marker:focus-visible .board{border-color:var(--cyan);box-shadow:0 0 14px rgba(79,216,255,.35)}
+.poi:nth-of-type(even) .glow{background:var(--amber);box-shadow:0 0 12px rgba(255,184,77,.9)}
+
+/* arrival panel */
+.panel{
+  position:absolute;bottom:96px;left:50%;width:min(280px,72vw);
+  transform:translateX(-50%) translateY(8px);
+  background:linear-gradient(180deg,rgba(140,190,255,.06),rgba(140,190,255,.02)),var(--panel);
+  border:1px solid var(--line);padding:16px 18px;text-align:left;
+  clip-path:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,12px 100%,0 calc(100% - 12px));
+  opacity:0;pointer-events:none;transition:opacity .22s,transform .22s;
+}
+.poi:hover .panel,.poi:focus-within .panel{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:auto}
+.poi[data-edge="l"] .panel{left:0;transform:translateX(-8%) translateY(8px)}
+.poi[data-edge="l"]:hover .panel,.poi[data-edge="l"]:focus-within .panel{transform:translateX(-8%) translateY(0)}
+.poi[data-edge="r"] .panel{left:auto;right:0;transform:translateX(8%) translateY(8px)}
+.poi[data-edge="r"]:hover .panel,.poi[data-edge="r"]:focus-within .panel{transform:translateX(8%) translateY(0)}
+
+.panel h3{margin:2px 0 8px;font-size:1.2rem;font-weight:700;letter-spacing:.03em;text-transform:uppercase}
+.panel p{margin:6px 0 0;color:var(--dim);font-size:.85rem;line-height:1.5}
+.ptag{margin:0!important;color:var(--amber);font-size:.66rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase}
+.panel .btn{
+  display:inline-block;margin-top:12px;padding:.55em 1.1em;
+  border:1.5px solid rgba(79,216,255,.6);color:var(--cyan);text-decoration:none;
+  font-size:.7rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,8px 100%,0 calc(100% - 8px));
+}
+.panel .btn:hover{background:rgba(79,216,255,.12)}
+
+/* ── HUD ── */
+.hud{
+  position:fixed;top:0;left:0;right:0;z-index:10;
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;
+  padding:14px clamp(16px,4vw,44px);
+  background:linear-gradient(180deg,rgba(4,6,14,.85),transparent);
+}
+.plate-lg{
+  padding:6px 14px;background:rgba(10,15,34,.8);border:1px solid rgba(140,190,255,.3);
+  font-size:.8rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
+  clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,8px 100%,0 calc(100% - 8px));
+}
+.hud nav{display:flex;gap:16px;flex-wrap:wrap}
+.hud nav a{color:var(--dim);text-decoration:none;font-size:.68rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase}
+.hud nav a:hover{color:var(--cyan)}
+
+/* ── route progress ── */
+.routeline{position:fixed;left:0;right:0;bottom:0;z-index:10;padding:0 clamp(16px,4vw,44px) 14px;pointer-events:none}
+.fillbar{position:relative;height:3px;background:rgba(140,190,255,.15);margin:0 0 8px}
+.fillbar i{position:absolute;left:0;top:0;bottom:0;width:0;background:var(--cyan);box-shadow:0 0 8px rgba(79,216,255,.8)}
+.stops{position:relative;height:0}
+.stops a{
+  position:absolute;top:-8px;width:9px;height:9px;margin-left:-4.5px;border-radius:50%;
+  background:var(--panel);border:2px solid var(--cyan);pointer-events:auto;
+}
+.stops a:hover{background:var(--cyan)}
+.drive{margin:0;text-align:center;color:var(--faint);font-size:.66rem;font-weight:600;letter-spacing:.22em;text-transform:uppercase;animation:pulse 2.2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:.9}50%{opacity:.35}}
+
+@media (max-width:700px){
+  .hud nav{display:none}
+  .panel{bottom:88px}
 }
 
-.hero{
- min-height:55vh;
- padding:60px 5%;
- background:radial-gradient(circle at 75% 20%,#16315c,transparent 35%);
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-delay:0s!important;transition-duration:.01ms!important}
 }
 
-h1{
- font-size:4.5rem;
- margin:0;
+/* ── depth layers ── */
+.farwrap{position:absolute;inset:0;z-index:0}
+.farline{position:absolute;inset:0;width:100%;height:100%;display:block}
+.far{fill:#0d1428;opacity:.5}
+.ant{stroke:#0d1428;stroke-width:5;fill:#0d1428;opacity:.5}
+
+.fgwrap{
+  position:fixed;top:0;bottom:0;left:0;height:100dvh;width:calc(100dvh * 7.7778);
+  z-index:8;pointer-events:none;
+}
+.fgline{width:100%;height:100%;display:block}
+.fgpost{stroke:#04060d;stroke-width:15;fill:#04060d}
+.fgpost.tree{stroke-width:20}
+.fgline .cable{stroke:#04060d;stroke-width:4;fill:none;opacity:.9}
+
+/* ── world dressing ── */
+.sheen{fill:rgba(150,175,235,.05)}
+.cat{fill:rgba(255,205,110,.5)}
+.door{fill:#070b18;stroke:rgba(140,190,255,.18)}
+.hazard{fill:rgba(255,184,77,.55)}
+.hazard.alt{fill:#141c30}
+.rick{fill:#123c26;stroke:#0a2417;stroke-width:1.5}
+.rickwin{fill:rgba(150,205,255,.3)}
+.rwheel{fill:#04060d;stroke:#16233f;stroke-width:2}
+.rlight{fill:#ffd98a}
+.flag{fill:#16233f}
+.shelter{fill:#0a0f22;stroke:rgba(140,190,255,.3);stroke-width:2}
+.bench{fill:#0d1530}
+.ticker{fill:rgba(255,190,90,.8);font-size:12px;letter-spacing:2px;font-family:"Chakra Petch",sans-serif}
+
+/* ── bus extras ── */
+.bus .shadow{fill:rgba(0,0,0,.55)}
+.bus .lightpool{fill:rgba(255,220,140,.09)}
+.bus .driver{fill:#070b18}
+.bus .passenger{fill:rgba(10,15,34,.8)}
+.bus .mirror{fill:#22304f}
+.bus .exhaust{fill:#0a0d18}
+.bus .spoke{fill:none;stroke:#22304f;stroke-width:2;stroke-dasharray:3 5;transform-box:fill-box;transform-origin:center;transform:rotate(var(--spin,0deg))}
+.bus .puff{fill:rgba(170,185,220,.22);animation:puff 1.8s ease-out infinite}
+.bus .puff.p2{animation-delay:.9s}
+@keyframes puff{0%{transform:translate(0,0);opacity:.35}100%{transform:translate(-14px,-10px);opacity:0}}
+
+/* ── rain ── */
+.storm{position:fixed;inset:0;z-index:12;pointer-events:none;overflow:hidden}
+.drop{
+  position:absolute;top:-10%;width:1.5px;height:64px;
+  background:linear-gradient(transparent,rgba(180,205,255,.30));
+  transform:rotate(11deg);
+  animation:drop var(--d,.7s) linear infinite;
+  animation-delay:var(--delay,0s);
+}
+@keyframes drop{to{transform:rotate(11deg) translateY(140vh)}}
+
+/* ── sky extras ── */
+.shoot{
+  position:absolute;top:8%;left:-8%;width:120px;height:2px;
+  background:linear-gradient(90deg,transparent,#dfe8ff);
+  transform:rotate(-24deg);opacity:0;
+  animation:shoot 11s linear infinite;animation-delay:4s;
+}
+@keyframes shoot{0%,88%{opacity:0;transform:rotate(-24deg) translateX(0)}89%{opacity:.9}100%{opacity:0;transform:rotate(-24deg) translateX(150vw)}}
+.plane{
+  position:absolute;top:16%;left:-2%;width:3px;height:3px;border-radius:50%;
+  background:rgba(255,120,120,.9);box-shadow:0 0 4px rgba(255,120,120,.8);
+  animation:plane 38s linear infinite;
+}
+@keyframes plane{to{transform:translateX(115vw)}}
+
+/* ── proximity glow on signposts ── */
+.poi .glow{
+  opacity:calc(.4 + .6 * var(--near,0));
+  transform:scale(calc(.85 + .35 * var(--near,0)));
+}
+.poi .board{
+  box-shadow:0 0 calc(12px * var(--near,0)) rgba(79,216,255,.4);
 }
 
-.hero h3{
- color:#55b9ff;
- font-size:1.8rem;
+/* ── HUD destination chip ── */
+.flexfill{flex:1}
+.next{
+  color:var(--amber);font-size:.68rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;
+  padding:5px 12px;background:rgba(10,15,34,.7);border:1px solid rgba(255,184,77,.25);
+  clip-path:polygon(0 0,calc(100% - 7px) 0,100% 7px,100% 100%,7px 100%,0 calc(100% - 7px));
+  white-space:nowrap;
+}
+.stops a.here{background:var(--cyan);box-shadow:0 0 8px rgba(79,216,255,.9)}
+.panel .stopno{float:right;color:var(--faint);letter-spacing:.1em}
+
+/* ── boot veil ── */
+.boot{
+  position:fixed;inset:0;z-index:40;background:#05070f;
+  display:grid;place-content:center;justify-items:center;gap:10px;
+  animation:boot .9s ease .55s forwards;pointer-events:none;
+}
+.boot b{color:var(--cyan);font-size:1.1rem;font-weight:700;letter-spacing:.5em;text-shadow:0 0 18px rgba(79,216,255,.7)}
+.boot span{color:var(--faint);font-size:.62rem;letter-spacing:.28em;text-transform:uppercase}
+@keyframes boot{to{opacity:0;visibility:hidden}}
+
+@media (max-width:900px){.next{display:none}}
+
+/* ── panel: skills + takeaway ── */
+.skills{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
+.skills i{
+  font-style:normal;font-size:.6rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+  padding:3px 9px;border:1px solid rgba(140,190,255,.28);color:var(--dim);
+  clip-path:polygon(0 0,calc(100% - 5px) 0,100% 5px,100% 100%,5px 100%,0 calc(100% - 5px));
+}
+.learn{color:var(--cyan)!important;font-size:.8rem!important;font-style:italic;opacity:.9}
+.bumper{stroke:#16233f;stroke-width:7;fill:none}
+
+/* ── zone atmosphere: the sky's temperament changes by district ── */
+@property --zt{syntax:"<color>";inherits:true;initial-value:rgba(0,0,0,0)}
+.ztint{
+  position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(120% 90% at 50% 115%, var(--zt), transparent 62%),
+    linear-gradient(var(--zt), transparent 75%);
+  transition:--zt 1.4s ease;
+}
+body[data-zone="arena"]{--zt:rgba(255,166,60,.18)}
+body[data-zone="lab"]{--zt:rgba(70,220,150,.14)}
+body[data-zone="build"]{--zt:rgba(150,120,255,.15)}
+body[data-zone="arcade"]{--zt:rgba(255,122,217,.14)}
+body[data-zone="terminus"]{--zt:rgba(255,150,80,.20)}
+
+/* ── mode chip + host + dawn ── */
+:root{--zc:var(--green)}
+body[data-zone="city"]{--zc:var(--cyan)}
+body[data-zone="arena"]{--zc:var(--amber)}
+body[data-zone="lab"]{--zc:var(--green)}
+body[data-zone="build"]{--zc:#b48cff}
+body[data-zone="arcade"]{--zc:var(--pink)}
+body[data-zone="terminus"]{--zc:#ff9c5b}
+.mode{
+  color:var(--zc);font-size:.68rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;
+  padding:5px 12px;background:rgba(10,15,34,.7);border:1px solid currentColor;
+  clip-path:polygon(0 0,calc(100% - 7px) 0,100% 7px,100% 100%,7px 100%,0 calc(100% - 7px));
+  white-space:nowrap;opacity:.9;transition:color .5s;
+}
+.podium{fill:#0a0f22;stroke:rgba(140,190,255,.35);stroke-width:2}
+.host{fill:#dfe8ff;stroke:#dfe8ff;stroke-width:4;fill:none;stroke-linecap:round}
+circle.host{fill:#dfe8ff;stroke:none}
+.mic{fill:#ff5d5d}
+.hostspot{fill:rgba(255,225,160,.09)}
+.sun{fill:#ff9c5b;filter:drop-shadow(0 0 30px rgba(255,140,70,.8))}
+
+@media (max-width:1100px){.mode{display:none}}
+
+/* ── far-skyline clipper: parallax overflow must not widen the scroll ── */
+.farclip{position:absolute;inset:0;overflow:hidden;z-index:0}
+
+/* ── the hero: a free runner living in world coordinates ── */
+.heropin{
+  position:absolute;bottom:15%;left:0;width:1.75%;z-index:6;pointer-events:none;
+}
+.heropin .hero{display:block;width:100%}
+.heropin.air .leg{animation:none;transform:rotate(22deg)}
+.heropin.air .leg.l2{transform:rotate(-6deg)}
+
+/* the night bus loops the route on its own — its roof is a platform */
+.traffic{position:absolute;bottom:15%;left:0;width:3.3%;z-index:5;pointer-events:none}
+.traffic .bus{display:block;width:100%;animation:bob 1.7s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+.fx{position:absolute;inset:0;z-index:7;pointer-events:none}
+
+/* bolts */
+.bolt{
+  position:absolute;width:12px;height:4px;margin:-2px 0 0 -6px;border-radius:2px;
+  background:#ffe9a8;box-shadow:0 0 9px rgba(255,220,130,.95);
 }
 
-.divider{
- width:45px;
- height:3px;
- background:#55b9ff;
- margin:18px 0;
+/* crates + shards */
+.crate .crbox{fill:#7a4e22;stroke:#4a2f10;stroke-width:2}
+.crate .crcross{stroke:#4a2f10;stroke-width:2;fill:none;opacity:.7}
+.crate .crstar{fill:#ffd97a;opacity:0;transform-box:fill-box;transform-origin:center}
+.crate.broken .crbox,.crate.broken .crcross{opacity:0;transition:opacity .15s}
+.crate.broken .crstar{animation:crstar .9s ease-out forwards}
+@keyframes crstar{0%{opacity:1;transform:scale(.3) translateY(0)}35%{opacity:1;transform:scale(1.5) translateY(-16px)}70%{opacity:1;transform:scale(1) translateY(-26px)}100%{opacity:0;transform:scale(.6) translateY(-34px)}}
+.shard{
+  position:absolute;width:7px;height:7px;background:#8a5a2b;border-radius:1px;
+  animation:shardfly .75s ease-out forwards;
 }
+@keyframes shardfly{0%{transform:translate(0,0) rotate(0);opacity:1}100%{transform:translate(var(--dx),var(--dy)) rotate(340deg);opacity:0}}
 
-/* Two fixed containers */
-.achievementArea{
- display:flex;
- width:100%;
- padding:40px 3%;
+/* grenade + blast */
+.nade{
+  position:absolute;width:11px;height:11px;margin:-5px 0 0 -5px;border-radius:50%;
+  background:radial-gradient(circle at 32% 30%,#3d4f78,#0c1426 70%);
+  box-shadow:0 0 7px rgba(255,150,60,.85);
 }
-
-.cardContainer{
- width:50%;
- padding:0 30px;
+.nade::after{
+  content:"";position:absolute;left:7px;top:-3px;width:4px;height:4px;border-radius:50%;
+  background:#ffce7a;animation:flick 0.16s infinite;
 }
-
-.cardContainer.left{
- padding-left:2%;
+@keyframes flick{0%,100%{opacity:1}50%{opacity:.15}}
+.boom{
+  position:absolute;width:14px;height:14px;margin:-7px 0 0 -7px;border-radius:50%;
+  border:3px solid #ffce7a;background:radial-gradient(circle,rgba(255,200,110,.9),rgba(255,140,60,0) 70%);
+  box-shadow:0 0 34px rgba(255,170,80,.85);
+  animation:boomx .5s cubic-bezier(.16,1,.3,1) forwards;pointer-events:none;
 }
-
-.cardContainer.right{
- padding-right:2%;
+@keyframes boomx{0%{transform:scale(.4);opacity:1}60%{opacity:.9}100%{transform:scale(13);opacity:0}}
+.spark{
+  position:absolute;width:4px;height:4px;border-radius:1px;background:#ffe9a8;
+  animation:shardfly .45s ease-out forwards;
 }
+.spark.fire{background:#ffab5e;box-shadow:0 0 6px rgba(255,170,80,.9);width:5px;height:5px}
+.traffic.nitro .bus{animation-duration:.45s}
+.traffic.nitro{filter:drop-shadow(0 0 16px rgba(79,216,255,.75))}
+.hero .leg,.hero .arm{stroke:#dfe8ff;stroke-width:6;stroke-linecap:round;fill:none}
+.hero .leg{transform-box:fill-box;transform-origin:top}
+.heropin.run .leg{animation:step .45s ease-in-out infinite alternate}
+.heropin.run .leg.l2{animation-direction:alternate-reverse}
+@keyframes step{from{transform:rotate(16deg)}to{transform:rotate(-16deg)}}
+.hero .torso,.hero .head{fill:#dfe8ff}
+.hero .pack{fill:#22304f}
+.hero .visor{fill:#0b1226}
+.hero .shadow{fill:rgba(0,0,0,.5)}
+.hero [class^="p-"],.hero [class*=" p-"]{opacity:0;transition:opacity .4s}
+body[data-zone="arena"] .p-mic,
+body[data-zone="lab"] .p-coat,body[data-zone="lab"] .p-flask,
+body[data-zone="build"] .p-hat,
+body[data-zone="arcade"] .p-phones,
+body[data-zone="terminus"] .p-wave{opacity:1}
+.hero .micdot{fill:#ff5d5d}
+.hero .p-coat path{fill:rgba(238,244,255,.92)}
+.hero .p-coat .belt{fill:none;stroke:#9fb0d8;stroke-width:2}
+.hero .p-flask path{fill:rgba(120,240,180,.35);stroke:#39d98a;stroke-width:1.5}
+.hero .flaskglow{fill:#39d98a}
+.hero .p-hat path,.hero .p-hat rect{fill:var(--amber)}
+.hero .p-phones path{stroke:var(--pink);stroke-width:3;fill:none;stroke-linecap:round}
+.hero .p-phones rect{fill:var(--pink)}
+.hero .p-wave{transform-box:fill-box;transform-origin:15% 85%;animation:wave .7s ease-in-out infinite alternate}
+@keyframes wave{from{transform:rotate(-14deg)}to{transform:rotate(14deg)}}
+.hero .hand{fill:#dfe8ff}
+@media (prefers-reduced-motion:reduce){.hero .leg,.hero .p-wave{animation:none}}
 
-.cardContainer h2{
- color:#b8d9ff;
- font-size:1.15rem;
- text-transform:uppercase;
+/* ── collectible stars ── */
+.pk{fill:#ffd97a}
+.pk .pkbg{fill:rgba(255,200,80,.14)}
+.pk .pkin{
+  transform-box:fill-box;transform-origin:center;
+  animation:pkfloat 2.4s ease-in-out infinite alternate;
+  filter:drop-shadow(0 0 7px rgba(255,200,80,.85));
 }
-
-/* Flex cards - NOT grid */
-.cards{
- display:flex;
- flex-wrap:wrap;
- justify-content:center;
- align-content:flex-start;
- gap:12px;
+@keyframes pkfloat{from{transform:translateY(0)}to{transform:translateY(-9px)}}
+.pk.got .pkin{animation:pkpop .5s ease forwards}
+@keyframes pkpop{35%{transform:scale(1.6)}100%{transform:scale(0);opacity:0}}
+.score{
+  color:var(--amber);font-size:.68rem;font-weight:700;letter-spacing:.14em;
+  padding:5px 12px;background:rgba(10,15,34,.7);border:1px solid rgba(255,184,77,.35);
+  clip-path:polygon(0 0,calc(100% - 7px) 0,100% 7px,100% 100%,7px 100%,0 calc(100% - 7px));
+  white-space:nowrap;font-variant-numeric:tabular-nums;
 }
+@media (prefers-reduced-motion:reduce){.pk .pkin{animation:none}}
 
-/* Same card size everywhere */
-.statCard{
- flex:1 1 150px;
- max-width:180px;
- min-width:140px;
- aspect-ratio:1.18;
- border:1px solid rgba(85,185,255,.35);
- border-radius:14px;
- padding:16px;
- display:flex;
- flex-direction:column;
- justify-content:center;
- align-items:center;
- text-align:center;
- background:rgba(255,255,255,.02);
+/* ── the capped end of the world ── */
+.endwall{fill:#070b16}
+.endedge{fill:#1a2642}
+.endtxt{fill:var(--amber);font-size:13px;font-weight:800;letter-spacing:.22em;font-family:"Chakra Petch";opacity:.85}
+
+/* ── liveliness pass: ambient micro-animation ── */
+
+/* neon signs buzz — a quick double-blink every so often, offset per color */
+.neon{animation:neonflick 8s linear infinite}
+.neon.amber{animation-delay:2.7s}
+.neon.green{animation-delay:5.1s}
+.neon.pink{animation-delay:1.3s}
+@keyframes neonflick{0%,91.9%,94.5%,100%{opacity:1}92%,94%{opacity:.35}}
+
+/* a few building windows wink on and off */
+.w.lit{animation:winwink 11s linear infinite}
+.w.lit:nth-of-type(odd){animation-delay:4.2s}
+@keyframes winwink{0%,86%,90%,100%{opacity:1}88%{opacity:.3}}
+
+/* slow clouds drifting under the stars */
+.cloud{
+  position:absolute;width:340px;height:90px;border-radius:50%;pointer-events:none;
+  background:radial-gradient(ellipse at center,rgba(9,13,28,.92),transparent 70%);
+  filter:blur(5px);animation:drift linear infinite;
 }
+.cloud.c1{top:9%;animation-duration:110s;animation-delay:-30s}
+.cloud.c2{top:17%;width:260px;height:66px;animation-duration:150s;animation-delay:-95s;opacity:.7}
+.cloud.c3{top:4%;width:430px;height:110px;animation-duration:190s;animation-delay:-140s;opacity:.55}
+@keyframes drift{from{transform:translateX(-460px)}to{transform:translateX(110vw)}}
 
-.top,.bottom{
- font-size:.82rem;
- line-height:1.2;
+/* a skein of night birds crosses every half-minute */
+.birds{
+  position:absolute;top:15%;left:0;width:96px;height:28px;opacity:0;pointer-events:none;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 28'%3E%3Cg stroke='%23a9b5d6' stroke-width='2' fill='none' stroke-linecap='round'%3E%3Cpath d='M2 14Q10 6 18 14M19 14Q27 6 35 14'/%3E%3Cpath d='M52 9Q60 1 68 9M69 9Q77 1 85 9'/%3E%3Cpath d='M34 22Q40 16 46 22M47 22Q53 16 59 22'/%3E%3C/g%3E%3C/svg%3E") no-repeat;
+  animation:flyby 32s linear 5s infinite;
 }
+@keyframes flyby{0%{transform:translate(-140px,0);opacity:0}3%{opacity:.65}55%{transform:translate(52vw,-26px);opacity:.65}97%{opacity:.6}100%{transform:translate(112vw,-64px);opacity:0}}
 
-.number{
- color:#55b9ff;
- font-size:2.5rem;
- font-weight:700;
- margin:8px 0;
-}
+/* moths circling every lamp head */
+.moth{animation:mothspin linear infinite}
+.moth circle{fill:rgba(255,230,160,.85)}
+@keyframes mothspin{to{transform:rotate(360deg)}}
 
-.featured{
- margin-top:40px;
- padding:50px 5%;
- border-top:1px solid rgba(85,185,255,.15);
-}
+/* working traffic light */
+.tlbox{fill:#0a0f20;stroke:rgba(140,190,255,.3);stroke-width:1.5}
+.tlr{fill:#ff5d5d}.tla{fill:#ffc14d}.tlg{fill:#3ddc84}
+.tlr,.tla,.tlg{opacity:.13}
+.tlg{animation:tlg 7s infinite}.tla{animation:tla 7s infinite}.tlr{animation:tlr 7s infinite}
+@keyframes tlg{0%,45%{opacity:1}46%,100%{opacity:.13}}
+@keyframes tla{0%,45%{opacity:.13}46%,55%{opacity:1}56%,100%{opacity:.13}}
+@keyframes tlr{0%,55%{opacity:.13}56%,92%{opacity:1}93%,100%{opacity:.13}}
 
-.featured h2{
- color:#55b9ff;
- font-size:2.5rem;
-}
+/* steam wisping out of the street vents */
+.vent rect{fill:#0d1430;stroke:#1a2642}
+.wisp{fill:rgba(185,205,238,.14);transform-box:fill-box;transform-origin:center;opacity:0;animation:wisp 3.6s ease-out infinite}
+.wisp.w2{animation-delay:1.2s}.wisp.w3{animation-delay:2.4s}
+@keyframes wisp{0%{transform:translateY(0) scaleX(1);opacity:0}15%{opacity:.6}100%{transform:translateY(-58px) scaleX(2.8);opacity:0}}
 
-@media(max-width:1000px){
- .achievementArea{
-  flex-direction:column;
- }
- .cardContainer{
-  width:100%;
-  padding:30px 5%;
- }
-}
+/* rain rings ticking in puddles */
+.rip{fill:none;stroke:rgba(150,190,255,.45);stroke-width:2;transform-box:fill-box;transform-origin:center;opacity:0;animation:ripple 2.6s ease-out infinite}
+@keyframes ripple{0%{transform:scale(.25);opacity:.55}80%{opacity:.12}100%{transform:scale(2.3);opacity:0}}
 
-@media(max-width:600px){
- .statCard{
-  flex-basis:calc(50% - 12px);
-  min-width:0;
- }
-}
+/* flags + the crane hook sway */
+.flag{animation:flap 1.5s ease-in-out infinite alternate}
+@keyframes flap{from{transform:skewY(-8deg)}to{transform:skewY(8deg)}}
+.hook{transform-origin:240px 252px;animation:hooksway 5.2s ease-in-out infinite alternate}
+@keyframes hooksway{from{transform:rotate(-4deg)}to{transform:rotate(4deg)}}
 
+/* signboards swing gently on their poles */
+.poi .board{transform-origin:top center;animation:boardsway 3.6s ease-in-out var(--swd,0s) infinite alternate}
+@keyframes boardsway{from{transform:rotate(-1.3deg)}to{transform:rotate(1.3deg)}}
 
-/* Featured Projects */
-.projectCards{
- display:flex;
- flex-wrap:wrap;
- justify-content:center;
- gap:25px;
-}
+/* star collect: a shockwave ring behind the pop */
+.pring{fill:none;stroke:#ffd97a;stroke-width:2;opacity:0;transform-box:fill-box;transform-origin:center}
+.pk.got .pring{animation:pring .55s ease-out .08s forwards}
+@keyframes pring{0%{transform:scale(.4);opacity:.9}100%{transform:scale(3.4);opacity:0}}
 
-.projectCard{
- flex:1 1 300px;
- max-width:380px;
- border:1px solid rgba(85,185,255,.25);
- border-radius:18px;
- padding:20px;
- background:rgba(255,255,255,.02);
-}
+/* stars rock a little as they hover */
+@keyframes pkfloat{from{transform:translateY(0) rotate(-7deg)}to{transform:translateY(-9px) rotate(7deg)}}
 
-.projectImage{
- height:170px;
- background:#101923;
- border-radius:12px;
- display:flex;
- align-items:center;
- justify-content:center;
- color:#65788c;
- margin-bottom:20px;
-}
+/* bus: headlight pool breathes, one cabin window flickers */
+.bus .lightpool{animation:lpulse 1.9s ease-in-out infinite alternate}
+@keyframes lpulse{from{opacity:.07}to{opacity:.16}}
+.bus .winlit.flick{animation:winflick 6.5s linear infinite}
+@keyframes winflick{0%,78%,82%,100%{opacity:1}79%,81%{opacity:.4}}
 
-.tags{
- color:#55b9ff;
- font-size:.9rem;
- margin-bottom:12px;
-}
+/* HUD: score pops on collect, the ▸ nudges you onward */
+.score{display:inline-block;animation:scorebump .45s cubic-bezier(.16,1,.3,1)}
+@keyframes scorebump{0%{transform:scale(1)}40%{transform:scale(1.28)}100%{transform:scale(1)}}
+.next .go{display:inline-block;animation:nudge 1.3s ease-in-out infinite}
+@keyframes nudge{0%,100%{transform:translateX(0)}50%{transform:translateX(3.5px)}}
 
-.projectCard a{
- color:#55b9ff;
-}
+/* panels: skill chips cascade in when the board opens */
+.skills i{opacity:0;transform:translateY(7px);transition:opacity .35s,transform .35s;transition-delay:calc(var(--i,0)*45ms)}
+.poi:hover .skills i,.poi:focus-within .skills i{opacity:1;transform:none}
