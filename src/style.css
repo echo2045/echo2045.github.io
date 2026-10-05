@@ -1,19 +1,33 @@
 
 *{
  box-sizing:border-box;
+  --blue:#55b9ff;
+  --blue-bright:#7fd4ff;
+  --blue-soft:rgba(127,212,255,.20);
 }
 
+/* One continuous blueprint field for the whole page. Sections have no
+   background of their own and no rules between them, so the grid runs
+   unbroken from the hero down through the archive. */
 body{
  margin:0;
- background:#070d18;
+ min-height:100vh;
  color:white;
  font-family:Inter,Arial,sans-serif;
+ background-color:#061527;
+ background-image:
+  radial-gradient(ellipse 90% 60% at 72% 8%,rgba(46,120,200,.55),transparent 60%),
+  radial-gradient(ellipse 70% 50% at 20% 45%,rgba(28,92,165,.34),transparent 65%),
+  linear-gradient(rgba(130,200,255,.13) 1px,transparent 1px),
+  linear-gradient(90deg,rgba(130,200,255,.13) 1px,transparent 1px);
+ background-size:100% 100%,100% 100%,32px 32px,32px 32px;
+ background-attachment:fixed;
 }
 
+/* Hero sits on the same field — only a soft light bloom, no hard edge. */
 .hero{
  min-height:55vh;
  padding:60px 5%;
- background:radial-gradient(circle at 75% 20%,#16315c,transparent 35%);
 }
 
 h1{
@@ -26,11 +40,13 @@ h1{
  font-size:1.8rem;
 }
 
+/* A short light streak rather than a dividing rule. */
 .divider{
- width:45px;
- height:3px;
- background:#55b9ff;
- margin:18px 0;
+ width:70px;
+ height:2px;
+ margin:20px 0;
+ background:linear-gradient(90deg,transparent,var(--blue),transparent);
+ box-shadow:0 0 14px rgba(127,212,255,.85);
 }
 
 /* Two fixed containers */
@@ -59,7 +75,7 @@ h1{
  text-transform:uppercase;
 }
 
-/* Flex cards - NOT grid */
+/* Milestone cards: 3 per row, trailing row centered by justify-content */
 .cards{
  display:flex;
  flex-wrap:wrap;
@@ -68,13 +84,17 @@ h1{
  gap:12px;
 }
 
-/* Same card size everywhere */
+/* Milestone cards read as drafted cells on the same field, not as separate
+   panels — light fill, soft edge, and the page grid still reads through.
+   flex:0 0 = never shrink, so a 4th card can never squeeze onto a full
+   row; below 444px of container width the 3-up basis no longer fits and
+   it degrades on its own to 2-up, then 1-up. */
 .statCard{
- flex:1 1 150px;
- max-width:180px;
+ flex:0 0 calc(33.333% - 8px);
+ max-width:280px;
  min-width:140px;
  aspect-ratio:1.18;
- border:1px solid rgba(85,185,255,.35);
+ border:1px solid rgba(140,215,255,.34);
  border-radius:14px;
  padding:16px;
  display:flex;
@@ -82,7 +102,8 @@ h1{
  justify-content:center;
  align-items:center;
  text-align:center;
- background:rgba(255,255,255,.02);
+ background:linear-gradient(160deg,rgba(135,205,255,.22),rgba(60,140,220,.12));
+ box-shadow:0 0 24px rgba(80,180,255,.16) inset;
 }
 
 .top,.bottom{
@@ -95,17 +116,6 @@ h1{
  font-size:2.5rem;
  font-weight:700;
  margin:8px 0;
-}
-
-.featured{
- margin-top:40px;
- padding:50px 5%;
- border-top:1px solid rgba(85,185,255,.15);
-}
-
-.featured h2{
- color:#55b9ff;
- font-size:2.5rem;
 }
 
 @media(max-width:1000px){
@@ -126,40 +136,4 @@ h1{
 }
 
 
-/* Featured Projects */
-.projectCards{
- display:flex;
- flex-wrap:wrap;
- justify-content:center;
- gap:25px;
-}
-
-.projectCard{
- flex:1 1 300px;
- max-width:380px;
- border:1px solid rgba(85,185,255,.25);
- border-radius:18px;
- padding:20px;
- background:rgba(255,255,255,.02);
-}
-
-.projectImage{
- height:170px;
- background:#101923;
- border-radius:12px;
- display:flex;
- align-items:center;
- justify-content:center;
- color:#65788c;
- margin-bottom:20px;
-}
-
-.tags{
- color:#55b9ff;
- font-size:.9rem;
- margin-bottom:12px;
-}
-
-.projectCard a{
- color:#55b9ff;
-}
+/* Featured Projects styling now lives in src/project-folder.css */
