@@ -1,0 +1,18 @@
+title: National Qualifiers
+order: 1
+role: Host
+engine: Esports
+year: Hosted
+hue: 220
+tags: Esports • Tournament • National
+cover:
+
+summary: Hosted 2 national qualifiers.
+
+intro:
+
+highlights:
+
+links:
+
+media:

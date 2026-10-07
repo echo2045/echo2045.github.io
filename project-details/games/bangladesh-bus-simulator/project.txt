@@ -1,0 +1,30 @@
+title: Bangladesh Bus Simulator
+order: 1
+role: Unity Developer
+engine: Unity
+year: 2025 - Present (Live)
+hue: 205
+tags: Unity • Mobile • Live Project • Simulation
+cover: BSBD_slim.png
+
+summary: Updating and Maintaining Gameplay systems for a 10M+ Download Scale published game
+
+intro:
+Experience the thrill of driving through Bangladesh’s vibrant roads in a realistic bus simulation adventure. Manage your own bus, explore familiar routes, navigate challenging traffic, and bring the country’s unique transport culture to life behind the wheel.
+
+Responsibilities:
+- Update and maintain the live build end to end.
+- Content delivery rework using Addressables and Cloudflare Web Services.
+- Revamping Weather System.
+- Revamping Traffic System.
+- Updating Backend Systems on Firebase.
+- Implementing Leaderboard System.
+- Ongoing optimization and bug fixing.
+- Conducting 30+ Playtesting with 40+ testers and community leaders. 
+
+links:
+- Play Store: https://play.google.com/store/apps/details?id=com.GhostInteractive.BusSimulatorBangladesh&hl=en
+
+media:
+- Trailer: https://youtu.be/J1Q9q0F_xtg
+- Barishal Update Gameplay: https://youtu.be/NANBFyw9ty8

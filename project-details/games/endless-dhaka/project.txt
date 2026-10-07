@@ -1,0 +1,29 @@
+title: Endless Dhaka
+order: 2
+role: Unity Developer
+engine: Unity
+year: 2026
+hue: 198
+tags: Unity • Mobile • Racing
+cover: Endless-Dhaka-512x512.png
+
+summary: Complete remake of popular local racing game with updated game systems
+
+intro:
+Buckle up and take on the endless roads of Dhaka! Weave through busy streets, race past landmarks, customise your ride, and experience the thrill of navigating one of the world’s most vibrant cities behind the wheel.
+
+Responsibilities:
+- Garage System
+- Shop System
+- Car Customisation
+- Save system
+- AI Racing Cars
+- UI Controlls
+- Overall Gameplay Logic
+- Multiplayer Solution with Fusion 2
+
+links:
+- Play Store: https://play.google.com/store/apps/details?id=com.GhostInteractive.EndlessDhaka&hl=en
+media:
+- Trailer: https://youtu.be/CVS-cKmKaGE
+- Gameplay: https://youtu.be/YRADM9Vw0R4

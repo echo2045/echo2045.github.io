@@ -14,18 +14,20 @@ const EASE = [0.22, 1, 0.36, 1];
  *  Project art doesn't exist yet, so cards fall back to a deterministic
  *  holographic gradient derived from the project's hue. When a real
  *  `cover` image lands it layers in instead — no markup change.
- *
- *  `layoutId` is shared between the carousel card and the opened panel so
- *  the artwork physically flies from the card into the full view.
  * ------------------------------------------------------------------ */
 
-function CoverArt({ project, className = "", layoutId }) {
+function CoverArt({ project, className = "" }) {
   const { hue } = project;
 
   if (project.cover) {
     return (
-      <motion.div className={`coverArt ${className}`} layoutId={layoutId}>
-        <img src={project.cover} alt="" loading="lazy" />
+      <motion.div className={`coverArt ${className}`}>
+        <img
+          src={project.cover}
+          alt=""
+          loading="lazy"
+          style={{ objectFit: project.coverFit ?? "cover" }}
+        />
       </motion.div>
     );
   }
@@ -33,7 +35,6 @@ function CoverArt({ project, className = "", layoutId }) {
   return (
     <motion.div
       className={`coverArt generated ${className}`}
-      layoutId={layoutId}
       style={{
         "--a": `hsl(${hue} 90% 66%)`,
         "--b": `hsl(${hue + 12} 78% 40%)`,
@@ -62,12 +63,16 @@ function initials(title) {
  *  Media
  * ------------------------------------------------------------------ */
 
+const SPAN_CLASS = { full: "spanFull", half: "spanHalf", third: "spanThird" };
+
 function MediaItem({ item }) {
   const aspect = "16 / 9";
+  const span = SPAN_CLASS[item.span] ?? "";
+  const kindLabel = item.type === "video" ? "Video" : item.type === "embed" ? "YouTube" : "Image";
 
   if (item.src) {
     return (
-      <figure className="mediaItem">
+      <figure className={`mediaItem ${span}`.trim()}>
         {item.type === "video" ? (
           <video src={item.src} controls preload="metadata" playsInline />
         ) : item.type === "embed" ? (
@@ -87,14 +92,12 @@ function MediaItem({ item }) {
   }
 
   return (
-    <figure className="mediaItem">
+    <figure className={`mediaItem ${span}`.trim()}>
       <div className="mediaSlot" style={{ aspectRatio: aspect }}>
         <span className="mediaIcon" aria-hidden="true">
           {item.type === "video" ? "▶" : item.type === "embed" ? "⌗" : "▣"}
         </span>
-        <span className="mediaType">
-          {item.type === "video" ? "Video" : item.type === "embed" ? "Embed" : "Image"}
-        </span>
+        <span className="mediaType">{kindLabel}</span>
         <span className="mediaCap">{item.caption}</span>
       </div>
     </figure>
@@ -105,7 +108,7 @@ function MediaItem({ item }) {
  *  Collapsed card (carousel)
  * ------------------------------------------------------------------ */
 
-function ProjectCard({ project, onOpen, layoutId }) {
+function ProjectCard({ project, onOpen }) {
   return (
     <motion.article
       className="projectCard"
@@ -119,7 +122,7 @@ function ProjectCard({ project, onOpen, layoutId }) {
         onClick={() => onOpen(project.id)}
         aria-label={`Open ${project.title}`}
       >
-        <CoverArt project={project} layoutId={layoutId} />
+        <CoverArt project={project} />
 
         <div className="cardMeta">
           <div className="cardTopRow">
@@ -329,9 +332,6 @@ function Carousel({ projects, position, onStep, onOpen }) {
                 <ProjectCard
                   project={project}
                   onOpen={() => onOpen(project.id)}
-                  /* layoutId must be unique: clones of the same project would
-                     collide and break framer-motion's layout animation. */
-                  layoutId={isActive ? `cover-${project.id}` : undefined}
                 />
               </div>
             );

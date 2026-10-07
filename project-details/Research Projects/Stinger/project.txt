@@ -1,0 +1,21 @@
+title: Stinger - An Asymmetric Multiplayer Serious Game for Dengue Awareness
+order: 1
+role: Team Lead, First Author
+engine: Research
+year: 2025
+hue: 178
+tags: Research • IEEE • Serious Games
+cover: 830485435_1042046825533537_1312020058854481794_n.jpg
+
+summary: Published IEEE research paper on serious games.
+
+intro:
+Dengue is a global health crisis and is spread by Aedes aegypti mosquitoes. This paper presents ‘Stinger’, a 3D asymmetric multiplayer serious game to address dengue awareness gaps in rural Bangladesh through culturally relevant gameplay. The game has interactive mechanics that simulate real-world dengue transmission dynamics, teach players to identify and eliminate mosquito breeding sites and adopt preventive behaviors. Setting in a rural Bangladeshi environment, the game has multiplayer functionality to model community-level disease spread and collective prevention strategies. Early results show significant knowledge retention and behavior adoption among players, so game-based learning works for public health education. The game provides a framework for developing culturally adapted serious games to bridge the gap between awareness and action in disease prevention.
+
+
+links:
+IEEEXplore: https://ieeexplore.ieee.org/document/11313522
+PDF: https://drive.google.com/file/d/16BXchVTAhUN0HY8h2b_VXFRQaj2f7Zlt/view?usp=sharing
+
+media:
+Paper Presentation: https://youtu.be/e73PJDZF6Do

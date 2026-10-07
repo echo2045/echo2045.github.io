@@ -1,0 +1,20 @@
+title: Panic Titanic
+order: 5
+role: Programming Lead
+engine: Unity
+year: Live
+hue: 218
+tags: Unity • Programming Lead
+cover:
+
+summary: Programming lead on Panic Titanic.
+
+intro:
+
+highlights:
+
+links:
+- Play Store | 
+
+media:
+- video | gameplay-video.mp4 | Gameplay Video

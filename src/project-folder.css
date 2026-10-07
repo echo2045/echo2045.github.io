@@ -301,6 +301,13 @@
  display:block;
 }
 
+/* A logo set to `contain` is letterboxed inside the card, so it gets a little
+   breathing room instead of running into the edges. */
+.coverArt img[style*="contain"]{
+ padding:12px;
+ box-sizing:border-box;
+}
+
 .coverArt.generated{
  display:flex;
  align-items:center;
@@ -610,6 +617,29 @@
 }
 
 .mediaCap{ font-size:.74rem; }
+
+/* ---------------- Media sizing ---------------- */
+
+/* Per-item width, so one project can lead with a full-width trailer and
+   still lay its screenshots out side by side. `span:` is optional in
+   project.txt; anything unlabelled keeps the default grid column. */
+.mediaItem.spanFull{
+ grid-column:1/-1;
+ max-width:none;
+}
+
+.mediaItem.spanHalf{
+ grid-column:span 2;
+ max-width:none;
+}
+
+.mediaItem.spanThird{ grid-column:span 1; }
+
+/* One item per row on narrow screens, whatever it asked for. */
+@media (max-width:760px){
+ .mediaItem.spanFull,
+ .mediaItem.spanHalf{ grid-column:1/-1; }
+}
 
 /* ---------------- Links ---------------- */
 

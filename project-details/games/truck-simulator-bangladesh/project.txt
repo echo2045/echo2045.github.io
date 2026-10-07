@@ -1,0 +1,23 @@
+title: Truck Simulator Bangladesh
+order: 3
+role: Game Systems Programmer
+engine: Unity
+year: Systems
+hue: 212
+tags: Unity • Mobile • Game Systems
+cover: TSBD Icon.jpg
+
+summary: Custom traffic system designed for realistic simulation.
+
+intro:
+Designed and programmed a custom traffic system tailored for realistic
+simulation and player experience.
+
+highlights:
+- Custom traffic system architecture.
+
+links:
+- Play Store | 
+
+media:
+- video | traffic-system-demo.mp4 | Traffic System Demo

@@ -1,0 +1,27 @@
+title: Purrfect Collars
+order: 4
+role: Unity Developer
+engine: Unity
+year: Live
+hue: 192
+tags: Unity • Cosy • Pixel Art
+cover: PurrfectCollarslogo.png
+coverFit: contain
+
+summary: Unity Development work done to build prototype during my Internship at Vidribute.
+
+intro:
+Purrfect Collars is a cozy single-player shopkeeping adventure. As a witch, design collars, enchant them with potions, manage your shop and meet interesting new customers! Each collar holds meaning, every cat a story!
+
+Responsibilities:
+- Planned and Designed initial core game concept
+- Researched real world products for game ideas
+- Developed game prototype for publisher consultation which lead to the project getting the go-ahead
+
+links:
+Steam Page:  https://store.steampowered.com/app/4000520/Purrfect_Collars/
+
+media:
+Shop Interior: ss_ee43bf5dea8a8ce8bfac50c08d3d2f88cb72157c.jpg
+Collar Crafting: ss_199709036cb1782dd3c440c5e7c2cf123d531e93.jpg
+Custom Buckle Options: ss_4b8402e76efa446194cb1b1f9962a64f62cd7179.jpg

@@ -1,0 +1,18 @@
+title: International Event Participation
+order: 2
+role: Organiser
+engine: Esports
+year: National Team
+hue: 228
+tags: Esports • International • National Team
+cover:
+
+summary: Organised national team participation in international events.
+
+intro:
+
+highlights:
+
+links:
+
+media:
